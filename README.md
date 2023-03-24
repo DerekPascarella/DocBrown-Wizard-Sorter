@@ -17,7 +17,7 @@ A simpler option afforded by this utility is to create a new folder in the root 
 
 Below is a specific list of the current features.
 
-* Optionally executes menu system's `RunMe.bat` script.
+* Optionally executes menu system's `RunMe.bat` script, which must be present in the expected location (folder `01`).
 * Automatically sorts game folders based on `Title.txt` inside of them, or the folder name itself if no text file is present.
 * Automatically generates `Title.txt` file for new folders added since last run.
 * Ignores folders without a valid disc image.
