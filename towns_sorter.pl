@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 #
-# towns_sorter.pl
+# DocBrown/Wizard Sorter v1.0
+# Written by Derek Pascarella (ateam)
+#
 # SD card sorter for the FM Towns/Marty ODEs DocBrown and Wizard.
 
 # Include necessary modules.
