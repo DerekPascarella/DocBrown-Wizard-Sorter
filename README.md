@@ -18,7 +18,7 @@ A simpler option afforded by this utility is to create a new folder in the root 
 Below is a specific list of the current features.
 
 * Optionally executes menu system's `RunMe.bat` script.
-* Automatically sorts game folders based on `Title.txt` inside of them, or the folder name itself of no text file is present.
+* Automatically sorts game folders based on `Title.txt` inside of them, or the folder name itself if no text file is present.
 * Automatically generates `Title.txt` file for new folders added since last run.
 * Ignores folders without a valid disc image.
   * Note that adding a `Title.txt` file to a folder will force this utility to treat it as a valid game folder. This is useful for adding a menu entry to force booting from FDD, as both DocBrown and Wizard will do so if user launches a menu entry containing no disc image.
