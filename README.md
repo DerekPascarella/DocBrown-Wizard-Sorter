@@ -11,9 +11,9 @@ DocBrown/Wizard Sorter is currently at version [1.0](https://github.com/DerekPas
 ## Supported Features
 DocBrown/Wizard Sorter aims to solve not only the problem of clean alphanumeric sorting of one's game list, but also the otherwise manual process of adding new games.
 
-New disc images can be added to the target SD card by placing them inside a numbered folder, along with a `Title.txt` file containing the desired display name.  The number used to name said folder doesn't matter, as this utility will automatically sort it accordingly.
+New disc images can be added to the target SD card by placing them inside a numbered folder, along with a `Title.txt` file containing the desired display name.  The number used to name said folder doesn't matter, as this utility will automatically rename and sort it accordingly.
 
-A simpler option afforded by this utility is to create a new folder in the root of the target SD card with the desired display name.  The disc image itself can be placed inside said folder, and DocBrown/Wizard Sorter will automatically generate a `Title.txt` file to reflect its folder name, and afterwards sort it accordingly.
+A simpler option afforded by this utility is to create a new folder in the root of the target SD card with the desired display name.  The disc image itself can be placed inside said folder, and DocBrown/Wizard Sorter will automatically generate a `Title.txt` file to reflect its folder name, and afterwards rename and sort it accordingly.
 
 Below is a specific list of the current features.
 
