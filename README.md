@@ -28,7 +28,7 @@ Below is a specific list of the current features.
 Two options exist for launching this utility.
 
 1. In Windows File Explorer, drag target SD card onto `towns_sorter.exe`.
-2. From a terminal (e.g., PowerShell, CMD), execute `towns_sorter.exe` with the path to the target SD card as the first input parameter (e.g., `towns_sorter.exe H:\`).
+2. From a terminal (e.g., PowerShell, CMD), execute `towns_sorter.exe` with the path to the target SD card as the first input parameter (e.g., `towns_sorter.exe H:\`).  Linux users can execute the Perl script directly (e.g., `perl towns_sorter.pl /mnt/sd` or `./towns_sorter.pl /mnt/sd` if script is made executable).
 
 Example output:
 
