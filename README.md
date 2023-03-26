@@ -8,6 +8,10 @@ This utility will perform all file/folder operations to automatically alphanumer
 ## Current Version
 DocBrown/Wizard Sorter is currently at version [1.0](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
 
+## Changelog
+* Version 1.0 (2023-03-24)
+  * Initial release.
+
 ## Supported Features
 DocBrown/Wizard Sorter aims to solve not only the problem of clean alphanumeric sorting of one's game list, but also the otherwise manual process of adding new games.
 
