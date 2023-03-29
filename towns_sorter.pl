@@ -119,7 +119,7 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	else
 	{
 		$game_name = $sd_subfolder;
-		$game_name =~ s/[^A-Za-z0-9\s+\-\.\,\(\)\[\]]//g;
+		$game_name =~ s/^\s+|\s+$//g;
 		$game_name =~ s/\s+/ /g;
 
 		# Write "title.txt" file.
@@ -160,7 +160,11 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 
 	# Generate game folder's new name.
 	my $sd_subfolder_new = $game_count;
-	if($game_count < 10) { $sd_subfolder_new = "0" . $sd_subfolder_new;	}
+	
+	if($game_count < 10)
+	{
+		$sd_subfolder_new = "0" . $sd_subfolder_new;
+	}
 	
 	# Print status message.
 	print "[" . $folder_name . "]\n";
