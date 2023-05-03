@@ -6,9 +6,11 @@ This utility will perform all file/folder operations to automatically alphanumer
 ![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) **IMPORTANT:** *Please do not run this program against your daily-use SD card. Instead, use a copy or backup until you're sure it works with your disc image collection.*
 
 ## Current Version
-DocBrown/Wizard Sorter is currently at version [1.0](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
+DocBrown/Wizard Sorter is currently at version [1.1](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
 
 ## Changelog
+* Version 1.1 (2023-05-03)
+  * To force Almanac/Spellbook to properly index a game list exceeding 100, a "FAT sort" is now performed on target SD card (e.g., `20 200 21` now becomes `20 21 ... 200`).
 * Version 1.0 (2023-03-24)
   * Initial release.
 
