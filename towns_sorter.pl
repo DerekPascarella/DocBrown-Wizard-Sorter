@@ -147,7 +147,7 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	{
 		# Move each file into temporary folder.
 		rename($sd_path_source . "/" . $sd_subfolder . "/" . $game_folder_file,
-			   $sd_path_source . "/towns_sorter_temp/" . $sd_subfolder . "/" . $game_folder_file);
+		       $sd_path_source . "/towns_sorter_temp/" . $sd_subfolder . "/" . $game_folder_file);
 	}
 
 	# Close game folder.
@@ -205,7 +205,7 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 	{
 		# Move each file back from temporay game folder.
 		rename($sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name} . "/" . $game_folder_file,
-			   $sd_path_source . "/" . $sd_subfolder_new . "/" . $game_folder_file);
+		       $sd_path_source . "/" . $sd_subfolder_new . "/" . $game_folder_file);
 	}
 
 	# Close game folder.
