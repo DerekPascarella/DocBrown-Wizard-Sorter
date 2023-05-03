@@ -42,6 +42,8 @@ Example output:
 DocBrown/Wizard Sorter v1.0
 Written by Derek Pascarella (ateam)
 
+Reading SD card...
+
 8 game(s) found on SD card.
 
 [Advantage Tennis]
