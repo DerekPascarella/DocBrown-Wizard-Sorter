@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# DocBrown/Wizard Sorter v1.0
+# DocBrown/Wizard Sorter v1.1
 # Written by Derek Pascarella (ateam)
 #
 # SD card sorter for the FM Towns/Marty ODEs DocBrown and Wizard.
@@ -10,10 +10,10 @@ use strict;
 use File::Basename;
 use File::Find::Rule;
 
-# Define input variables.
+# Initialize input variables.
 my $sd_path_source = $ARGV[0];
 
-# Define/initialize variables.
+# Declare/initialize variables.
 my %game_list;
 my $game_count_found = 0;
 my $game_count = 1;
@@ -22,7 +22,7 @@ my $invalid_count = 0;
 # No valid SD card path specified.
 if(!-d $sd_path_source || !-e $sd_path_source || $sd_path_source eq "")
 {
-	print "\nDocBrown/Wizard Sorter v1.0\n";
+	print "\nDocBrown/Wizard Sorter v1.1\n";
 	print "Written by Derek Pascarella (ateam)\n\n";
 	print "Error: No SD card path specified.\n\n";
 	print "Example Usage: docbrown_sorter H:\\\n\n";
@@ -34,7 +34,7 @@ if(!-d $sd_path_source || !-e $sd_path_source || $sd_path_source eq "")
 # SD card path is unreadable.
 elsif(!-R $sd_path_source)
 {
-	print "\nDocBrown/Wizard Sorter v1.0\n";
+	print "\nDocBrown/Wizard Sorter v1.1\n";
 	print "Written by Derek Pascarella (ateam)\n\n";
 	print "Error: Specified SD card path is unreadable.\n\n";
 	print "Example Usage: docbrown_sorter H:\\\n\n";
@@ -45,8 +45,12 @@ elsif(!-R $sd_path_source)
 }
 
 # Status message.
-print "\nDocBrown/Wizard Sorter v1.0\n";
+print "\nDocBrown/Wizard Sorter v1.1\n";
 print "Written by Derek Pascarella (ateam)\n\n";
+print "Reading SD card...\n\n";
+
+# Create temporary folder for purposes of sorting FAT filesystem.
+mkdir($sd_path_source . "/towns_sorter_temp/");
 
 # Open SD card path for reading.
 opendir(my $sd_path_source_handler, $sd_path_source);
@@ -96,7 +100,7 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	}
 
 	# To prevent folder name conflicts, rename invalid folder for user to process manually.
-	if(!$game_found)
+	if(!$game_found && $sd_subfolder ne "towns_sorter_temp")
 	{
 		$invalid_count ++;
 
@@ -106,7 +110,7 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	# If folder contains no game disc image, skip it.
 	next if(!$game_found);
 
-	# Define game name variable.
+	# Declare game name variable.
 	my $game_name;
 
 	# Store game name from "title.txt".
@@ -132,8 +136,25 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	# Increase detected game count by one.
 	$game_count_found ++;
 
-	# Temporarily append underscore to game folder name.
-	rename($sd_path_source . "/" . $sd_subfolder, $sd_path_source . "/" . $sd_subfolder . "_");
+	# For purposes of FAT sorting, create temporary folder for game.
+	mkdir($sd_path_source . "/towns_sorter_temp/" . $sd_subfolder);
+	
+	# Open game folder for reading.
+	opendir(my $game_folder_handler, $sd_path_source . "/" . $sd_subfolder);
+
+	# Iterate through contents of game folder.
+	foreach my $game_folder_file (readdir($game_folder_handler))
+	{
+		# Move each file into temporary folder.
+		rename($sd_path_source . "/" . $sd_subfolder . "/" . $game_folder_file,
+			   $sd_path_source . "/towns_sorter_temp/" . $sd_subfolder . "/" . $game_folder_file);
+	}
+
+	# Close game folder.
+	closedir($game_folder_handler);
+
+	# Remove original game folder.
+	rmdir($sd_path_source . "/" . $sd_subfolder);
 }
 
 # Close SD card path.
@@ -151,6 +172,9 @@ if(!$game_count_found)
 
 # Prompt before continuing.
 print $game_count_found . " game(s) found on SD card.\n\n";
+
+# Sleep for two seconds before proceeding.
+sleep(2);
 
 # Iterate through each key in game list hash, processing each folder move/rename.
 foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
@@ -170,9 +194,29 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 	print "[" . $folder_name . "]\n";
 	print "   -> Moved \"" . $game_list{$folder_name} . "\" -> \"" . $sd_subfolder_new . "\"\n\n";
 
-	# Rename folder.
-	rename($sd_path_source . "/" . $game_list{$folder_name} . "_", $sd_path_source . "/" . $sd_subfolder_new);
+	# Create game folder based on new sorted name.
+	mkdir($sd_path_source . "/" . $sd_subfolder_new);
+	
+	# Open temporary game folder for reading.
+	opendir(my $game_folder_handler, $sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name});
+
+	# Iterate through contents of temporary game folder.
+	foreach my $game_folder_file (readdir($game_folder_handler))
+	{
+		# Move each file back from temporay game folder.
+		rename($sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name} . "/" . $game_folder_file,
+			   $sd_path_source . "/" . $sd_subfolder_new . "/" . $game_folder_file);
+	}
+
+	# Close game folder.
+	closedir($game_folder_handler);
+
+	# Remove temporary game folder.
+	rmdir($sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name});
 }
+
+# Remove temporary folder.
+rmdir($sd_path_source . "/towns_sorter_temp/");
 
 # Print status message.
 print $game_count_found . " game(s) processed!\n\n";
