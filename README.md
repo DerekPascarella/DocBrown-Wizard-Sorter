@@ -39,7 +39,7 @@ Two options exist for launching this utility.
 Example output:
 
 ```
-DocBrown/Wizard Sorter v1.0
+DocBrown/Wizard Sorter v1.1
 Written by Derek Pascarella (ateam)
 
 Reading SD card...
