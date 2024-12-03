@@ -3,7 +3,7 @@ SD card sorter for the FM Towns/Marty ODEs [DocBrown](https://gdemu.wordpress.co
 
 This utility will perform all file/folder operations to automatically alphanumerically sort the game list on a target SD card for use with the [Almanac](https://gdemu.wordpress.com/operation/docbrown-operation/) and [Spellbook](https://gdemu.wordpress.com/operation/wizard-operation/) menu systems.
 
-![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) **IMPORTANT:** *Please do not run this program against your daily-use SD card. Instead, use a copy or backup until you're sure it works with your disc image collection.*
+![#f03c15](https://i.imgur.com/XsUAGA0.png) **IMPORTANT:** *Please do not run this program against your daily-use SD card. Instead, use a copy or backup until you're sure it works with your disc image collection.*
 
 ## Current Version
 DocBrown/Wizard Sorter is currently at version [1.1](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
