@@ -210,7 +210,7 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 	}
 	else
 	{
-		print "(";
+		print "(new: ";
 	}
 
 	print $folder_name . ")\n";
