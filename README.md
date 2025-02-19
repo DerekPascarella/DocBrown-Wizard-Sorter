@@ -47,7 +47,7 @@ Written by Derek Pascarella (ateam)
 
 Processing SD card (F:)...
 
-7 disc image(s) found and pre-processed on SD card.
+8 disc image(s) found and pre-processed on SD card.
 
 These disc images have been moved to a temporary folder on the SD card for
 purposes of FAT sorting.
@@ -55,15 +55,16 @@ purposes of FAT sorting.
 In five seconds, disc images will be auomatically organized using numbered
 folders in alphanumeric order.
 
-  -> Moved 02 -> 02 (---BOOT FROM FLOPPY---)
-  -> Moved 03 -> 03 (ADVANTAGE TENNIS)
-  -> Moved 04 -> 04 (AFTER BURNER)
-  -> Moved 05 -> 05 (AFTER BURNER 2)
-  -> Moved AFTER BURNER 3 -> 06 (AFTER BURNER 3)
-  -> Moved 06 -> 07 (ALLTYNEX (T-EN))
-  -> Moved 07 -> 08 (ALONE IN THE DARK)
+  -> Folder 02 (unchanged: ADVANTAGE TENNIS)
+  -> Folder 03 (unchanged: AFTER BURNER)
+  -> Folder 04 (unchanged: AFTER BURNER 2)
+  -> Folder 05 (unchanged: AFTER BURNER 3)
+  -> Folder 06 (unchanged: ALLTYNEX (T-EN))
+  -> Folder 07 (ARQUELPHOS)
+  -> Folder 08 (previously 07: ARQUELPHOS)
+  -> Folder 09 (previously 08: ASUKA 120% BURNING FEST)
 
-7 disc images(s) fully processed!
+8 disc images(s) fully processed!
 
 Run Almanac/Spellbook batch script? (Y/N) y
 
