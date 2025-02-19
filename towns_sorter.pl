@@ -198,7 +198,22 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 	}
 	
 	# Status message.
-	print "  -> Moved " . $game_list{$folder_name} . " -> " . $sd_subfolder_new . " (" . $folder_name . ")\n";
+	print "  -> Folder " . $sd_subfolder_new . " ";
+
+	if($game_list{$folder_name} eq $sd_subfolder_new)
+	{
+		print "(unchaged: ";
+	}
+	elsif($game_list{$folder_name} ne $folder_name)
+	{
+		print "(previously " . $game_list{$folder_name} . ": ";
+	}
+	else
+	{
+		print "(";
+	}
+
+	print $folder_name . ")\n";
 
 	# Create game folder based on new sorted name.
 	mkdir($sd_path_source . "/" . $sd_subfolder_new);
