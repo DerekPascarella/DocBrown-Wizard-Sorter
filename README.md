@@ -60,7 +60,7 @@ folders in alphanumeric order.
   -> Folder 04 (unchanged: AFTER BURNER 2)
   -> Folder 05 (unchanged: AFTER BURNER 3)
   -> Folder 06 (unchanged: ALLTYNEX (T-EN))
-  -> Folder 07 (ARQUELPHOS)
+  -> Folder 07 (new: ARQUELPHOS)
   -> Folder 08 (previously 07: ARQUELPHOS)
   -> Folder 09 (previously 08: ASUKA 120% BURNING FEST)
 
