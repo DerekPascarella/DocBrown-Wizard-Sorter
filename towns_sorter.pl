@@ -202,7 +202,7 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 
 	if($game_list{$folder_name} eq $sd_subfolder_new)
 	{
-		print "(unchaged: ";
+		print "(unchanged: ";
 	}
 	elsif($game_list{$folder_name} ne $folder_name)
 	{
