@@ -59,9 +59,9 @@ folders in alphanumeric order.
   -> Moved 03 -> 03 (ADVANTAGE TENNIS)
   -> Moved 04 -> 04 (AFTER BURNER)
   -> Moved 05 -> 05 (AFTER BURNER 2)
-  -> Moved 06 -> 06 (AFTER BURNER 3)
-  -> Moved 07 -> 07 (ALLTYNEX (T-EN))
-  -> Moved 08 -> 08 (ALONE IN THE DARK)
+  -> Moved AFTER BURNER 3 -> 06 (AFTER BURNER 3)
+  -> Moved 06 -> 07 (ALLTYNEX (T-EN))
+  -> Moved 07 -> 08 (ALONE IN THE DARK)
 
 7 disc images(s) fully processed!
 
