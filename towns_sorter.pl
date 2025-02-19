@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# DocBrown/Wizard Sorter v1.1
+# DocBrown/Wizard Sorter v1.2
 # Written by Derek Pascarella (ateam)
 #
 # SD card sorter for the FM Towns/Marty ODEs DocBrown and Wizard.
@@ -9,6 +9,9 @@
 use strict;
 use File::Basename;
 use File::Find::Rule;
+
+# Set version number.
+my $version = "1.2";
 
 # Initialize input variables.
 my $sd_path_source = $ARGV[0];
@@ -19,13 +22,15 @@ my $game_count_found = 0;
 my $game_count = 1;
 my $invalid_count = 0;
 
+# Set header used in CLI messages.
+my $cli_header = "\nDocBrown/Wizard Sorter v" . $version . "\nWritten by Derek Pascarella (ateam)\n\n";
+
 # No valid SD card path specified.
 if(!-d $sd_path_source || !-e $sd_path_source || $sd_path_source eq "")
 {
-	print "\nDocBrown/Wizard Sorter v1.1\n";
-	print "Written by Derek Pascarella (ateam)\n\n";
-	print "Error: No SD card path specified.\n\n";
-	print "Example Usage: docbrown_sorter H:\\\n\n";
+	print $cli_header;
+	print STDERR "Error: No SD card path specified.\n\n";
+	print "Example Usage: towns_sorter H:\\\n\n";
 	print "Press Enter to exit.\n";
 	<STDIN>;
 
@@ -34,10 +39,9 @@ if(!-d $sd_path_source || !-e $sd_path_source || $sd_path_source eq "")
 # SD card path is unreadable.
 elsif(!-R $sd_path_source)
 {
-	print "\nDocBrown/Wizard Sorter v1.1\n";
-	print "Written by Derek Pascarella (ateam)\n\n";
-	print "Error: Specified SD card path is unreadable.\n\n";
-	print "Example Usage: docbrown_sorter H:\\\n\n";
+	print $cli_header;
+	print STDERR "Error: Specified SD card path is unreadable.\n\n";
+	print "Example Usage: towns_sorter H:\\\n\n";
 	print "Press Enter to exit.\n";
 	<STDIN>;
 
@@ -45,9 +49,8 @@ elsif(!-R $sd_path_source)
 }
 
 # Status message.
-print "\nDocBrown/Wizard Sorter v1.1\n";
-print "Written by Derek Pascarella (ateam)\n\n";
-print "Reading SD card...\n\n";
+print $cli_header;
+print "Processing SD card (" . $sd_path_source . ")...\n\n";
 
 # Create temporary folder for purposes of sorting FAT filesystem.
 mkdir($sd_path_source . "/towns_sorter_temp/");
@@ -61,10 +64,10 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	# Skip folders starting with a period.
 	next if($sd_subfolder =~ /^\./);
 	
-	# Skip all non-folders (e.g., files like "DocBrown.ini").
+	# Skip all non-folders (e.g., "DocBrown.ini", "Wizard.ini", etc).
 	next if(!-d $sd_path_source . "/" . $sd_subfolder);
 	
-	# Skip folder "01" containing GDMenu.
+	# Skip folder "01" containing Almanac/Spellbook.
 	next if($sd_subfolder eq "01");
 
 	# Ignore Windows system folder.
@@ -89,10 +92,10 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	{
 		foreach(@sd_subfolder_files)
 		{
-			(my $name, my $path, my $suffix) = fileparse($_, qr"\..[^.]*$");
+			my $suffix = (fileparse($_, qr"\..[^.]*$"))[2];
 
-			if(lc($suffix) eq ".cdi" || lc($suffix) eq ".ccd" || lc($suffix) eq ".img"
-				|| lc($suffix) eq ".bin" || lc($suffix) eq ".iso" || lc($suffix) eq ".mdf")
+			if(lc($suffix) eq ".cdi" || lc($suffix) eq ".ccd" || lc($suffix) eq ".img" ||
+			   lc($suffix) eq ".bin" || lc($suffix) eq ".iso" || lc($suffix) eq ".mdf")
 			{
 				$game_found = 1;
 			}
@@ -116,7 +119,7 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	# Store game name from "title.txt".
 	if(-e $sd_path_source . "/" . $sd_subfolder . "/" . "Title.txt")
 	{
-		$game_name = &read_file($sd_path_source . "/" . $sd_subfolder . "/" . "Title.txt");
+		$game_name = read_file($sd_path_source . "/" . $sd_subfolder . "/" . "Title.txt");
 		$game_name =~ s/^\s+|\s+$//g;
 	}
 	# Store folder name as game name.
@@ -127,7 +130,7 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 		$game_name =~ s/\s+/ /g;
 
 		# Write "title.txt" file.
-		&write_file($sd_path_source . "/" . $sd_subfolder . "/" . "Title.txt", $game_name);
+		write_file($sd_path_source . "/" . $sd_subfolder . "/" . "Title.txt", $game_name);
 	}
 
 	# Add game to hash.
@@ -147,7 +150,7 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	{
 		# Move each file into temporary folder.
 		rename($sd_path_source . "/" . $sd_subfolder . "/" . $game_folder_file,
-		       $sd_path_source . "/towns_sorter_temp/" . $sd_subfolder . "/" . $game_folder_file);
+			   $sd_path_source . "/towns_sorter_temp/" . $sd_subfolder . "/" . $game_folder_file);
 	}
 
 	# Close game folder.
@@ -163,7 +166,7 @@ closedir($sd_path_source_handler);
 # No games found on target SD card.
 if(!$game_count_found)
 {
-	print "No games detected on SD card.\n\n";
+	print "No disc images detected on SD card.\n\n";
 	print "Press Enter to exit.\n";
 	<STDIN>;
 
@@ -171,10 +174,14 @@ if(!$game_count_found)
 }
 
 # Prompt before continuing.
-print $game_count_found . " game(s) found on SD card.\n\n";
+print $game_count_found . " disc image(s) found and pre-processed on SD card.\n\n";
+print "These disc images have been moved to a temporary folder on the SD card for\n";
+print "purposes of FAT sorting.\n\n";
+print "In five seconds, disc images will be auomatically organized using numbered\n";
+print "folders in alphanumeric order.\n\n";
 
-# Sleep for two seconds before proceeding.
-sleep(2);
+# Sleep for five seconds before proceeding.
+sleep(5);
 
 # Iterate through each key in game list hash, processing each folder move/rename.
 foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
@@ -190,9 +197,8 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 		$sd_subfolder_new = "0" . $sd_subfolder_new;
 	}
 	
-	# Print status message.
-	print "[" . $folder_name . "]\n";
-	print "   -> Moved \"" . $game_list{$folder_name} . "\" -> \"" . $sd_subfolder_new . "\"\n\n";
+	# Status message.
+	print "  -> Moved " . $game_list{$folder_name} . " -> " . $sd_subfolder_new . " (" . $folder_name . ")\n";
 
 	# Create game folder based on new sorted name.
 	mkdir($sd_path_source . "/" . $sd_subfolder_new);
@@ -205,7 +211,7 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 	{
 		# Move each file back from temporay game folder.
 		rename($sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name} . "/" . $game_folder_file,
-		       $sd_path_source . "/" . $sd_subfolder_new . "/" . $game_folder_file);
+			   $sd_path_source . "/" . $sd_subfolder_new . "/" . $game_folder_file);
 	}
 
 	# Close game folder.
@@ -218,8 +224,8 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 # Remove temporary folder.
 rmdir($sd_path_source . "/towns_sorter_temp/");
 
-# Print status message.
-print $game_count_found . " game(s) processed!\n\n";
+# Status message.
+print "\n" . $game_count_found . " disc images(s) fully processed!\n\n";
 
 # If invalid game folders were found, list them along with a message.
 if($invalid_count)
@@ -228,21 +234,26 @@ if($invalid_count)
 
 	for(1 .. $invalid_count)
 	{
-		print "   -> INVALID_" . $_ . "\n";
+		print "  -> INVALID_" . $_ . "\n";
 	}
 
 	print "\n";
 }
 
-# Prompt to run Almanac/Spellbook batch script.
-print "Run Almanac/Spellbook batch script? (Y/N) ";
-chop(my $batch_response = <STDIN>);
+# Prompt to run Almanac/Spellbook batch script until valid response given.
+my $batch_response;
+
+while($batch_response !~ /^[YN]$/i)
+{
+	print "Run Almanac/Spellbook batch script? (Y/N) ";
+	chop($batch_response = <STDIN>);
+}
 
 # Execute Almanac/Spellbook's "RunMe.bat" script.
 if(lc($batch_response) eq "y")
 {
 	# Almanac/Spellbook batch script found.
-	if(-e $sd_path_source . "/01/")
+	if(-e $sd_path_source . "/01/RunMe.bat")
 	{
 		print "\n==========RunMe.bat==========\n";
 
@@ -254,12 +265,23 @@ if(lc($batch_response) eq "y")
 	# Batch script not found.
 	else
 	{
-		print "\nThe \"RunMe.bat\" script was not found in folder \"01\"!\n";
+		#print "\nThe \"RunMe.bat\" script was not found in folder \"01\"!\n";
+		print "\nThe \"RunMe.bat\" script was not found in folder 01!\n";
 	}
 }
 
-# Final message.
-print "\nPress Enter to exit.\n";
+# Status message.
+print "\nSD card processing complete!\n\n";
+print "An index of disc images can be found in the following location:\n";
+print $sd_path_source;
+
+if(substr($sd_path_source, -1) ne "\\")
+{
+	print "\\";
+}
+
+print "01\\data\\TITLES.TXT\n\n";
+print "Press Enter to exit.\n";
 <STDIN>;
 
 # Subroutine to read a specified file.
