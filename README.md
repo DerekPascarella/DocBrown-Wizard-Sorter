@@ -6,9 +6,12 @@ This utility will perform all file/folder operations to automatically alphanumer
 ![#f03c15](https://i.imgur.com/XsUAGA0.png) **IMPORTANT:** *Please do not run this program against your daily-use SD card. Instead, use a copy or backup until you're sure it works with your disc image collection.*
 
 ## Current Version
-DocBrown/Wizard Sorter is currently at version [1.1](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
+DocBrown/Wizard Sorter is currently at version [1.2](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
 
 ## Changelog
+* Version 1.2 (2025-02-19)
+  * Cleaned up status message output to be more compact and descriptive.
+  * Invalid user response to Almanac/Spellbook rebuild prompt now properly handled.
 * Version 1.1 (2023-05-03)
   * To force Almanac/Spellbook to properly index a game list exceeding 100 even when using FindFirstFile(), a "FAT sort" is now performed on target SD card (e.g., `20 200 21` now becomes `20 21 ... 200`).
 * Version 1.0 (2023-03-24)
@@ -25,6 +28,7 @@ Below is a specific list of the current features.
 * Optionally executes menu system's `RunMe.bat` script, which must be present in the expected location (folder `01`).
 * Automatically sorts game folders based on `Title.txt` inside of them, or the folder name itself if no text file is present.
 * Automatically generates `Title.txt` file for new folders added since last run.
+* Game names can be changed by modifying `Title.txt` inside of their respective folders and then processing SD card with DocBrown/Wizard Sorter.
 * Ignores folders without a valid disc image.
   * Note that adding a `Title.txt` file to a folder will force this utility to treat it as a valid game folder. This is useful for adding a menu entry to force booting from FDD, as both DocBrown and Wizard will do so if user launches a menu entry containing no disc image.
   * Invalid folders will be renamed to `INVALID_X`, where `X` is iterated over sequentially for each found.
@@ -38,53 +42,46 @@ Two options exist for launching this utility.
 Example output:
 
 ```
-DocBrown/Wizard Sorter v1.1
+DocBrown/Wizard Sorter v1.2
 Written by Derek Pascarella (ateam)
 
-Reading SD card...
+Processing SD card (F:)...
 
-8 game(s) found on SD card.
+7 disc image(s) found and pre-processed on SD card.
 
-[Advantage Tennis]
-   -> Moved "Advantage Tennis" -> "02"
+These disc images have been moved to a temporary folder on the SD card for
+purposes of FAT sorting.
 
-[Ballade for Maria]
-   -> Moved "Ballade for Maria" -> "03"
+In five seconds, disc images will be auomatically organized using numbered
+folders in alphanumeric order.
 
-[Megamorph]
-   -> Moved "09" -> "04"
+  -> Moved 02 -> 02 (---BOOT FROM FLOPPY---)
+  -> Moved 03 -> 03 (ADVANTAGE TENNIS)
+  -> Moved 04 -> 04 (AFTER BURNER)
+  -> Moved 05 -> 05 (AFTER BURNER 2)
+  -> Moved 06 -> 06 (AFTER BURNER 3)
+  -> Moved 07 -> 07 (ALLTYNEX (T-EN))
+  -> Moved 08 -> 08 (ALONE IN THE DARK)
 
-[Microcosm]
-   -> Moved "05" -> "05"
-
-[Ningyou Tsukai]
-   -> Moved "06" -> "06"
-
-[Pu-Li-Ru-La]
-   -> Moved "07" -> "07"
-
-[Rainbow Islands Extra]
-   -> Moved "08" -> "08"
-
-[Scavenger 4]
-   -> Moved "04" -> "09"
-
-8 game(s) processed!
+7 disc images(s) fully processed!
 
 Run Almanac/Spellbook batch script? (Y/N) y
 
 ==========RunMe.bat==========
 Scanning folders...
-Titles found: 8
-Compiling list
-Done
+Titles found: 75
 Total translation table size: 0
 Total rockridge attributes bytes: 0
-Total directory bytes: 474
-Path table size(bytes): 10
-533 extents written (1 MB)
-IO.SYS LBA: 24
+Total directory bytes: 2564
+Path table size(bytes): 24
+782 extents written (1 MB)
+IO.SYS LBA: 25
 =============================
+
+SD card processing complete!
+
+An index of disc images can be found in the following location:
+F:\01\data\TITLES.TXT
 
 Press Enter to exit.
 ```
