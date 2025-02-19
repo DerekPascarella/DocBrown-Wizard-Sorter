@@ -70,7 +70,7 @@ Run Almanac/Spellbook batch script? (Y/N) y
 
 ==========RunMe.bat==========
 Scanning folders...
-Titles found: 75
+Titles found: 8
 Total translation table size: 0
 Total rockridge attributes bytes: 0
 Total directory bytes: 2564
