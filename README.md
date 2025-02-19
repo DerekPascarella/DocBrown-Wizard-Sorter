@@ -11,6 +11,7 @@ DocBrown/Wizard Sorter is currently at version [1.2](https://github.com/DerekPas
 ## Changelog
 * Version 1.2 (2025-02-19)
   * Cleaned up status message output to be more compact and descriptive.
+  * Enhanced sanity-check for Almanac/Spellbook rebuild.
   * Invalid user response to Almanac/Spellbook rebuild prompt now properly handled.
 * Version 1.1 (2023-05-03)
   * To force Almanac/Spellbook to properly index a game list exceeding 100 even when using FindFirstFile(), a "FAT sort" is now performed on target SD card (e.g., `20 200 21` now becomes `20 21 ... 200`).
