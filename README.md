@@ -6,9 +6,11 @@ This utility will perform all file/folder operations to automatically alphanumer
 ![#f03c15](https://i.imgur.com/XsUAGA0.png) **IMPORTANT:** *Please do not run this program against your daily-use SD card. Instead, use a copy or backup until you're sure it works with your disc image collection.*
 
 ## Current Version
-DocBrown/Wizard Sorter is currently at version [1.2](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
+DocBrown/Wizard Sorter is currently at version [1.3](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
 
 ## Changelog
+* **Version 1.3 (2025-05-06)**
+  * Improved clarify of status message output when new disc images are added and processed.
 * **Version 1.2 (2025-02-19)**
   * Cleaned up status message output to be more compact and descriptive.
   * Enhanced sanity-check for Almanac/Spellbook rebuild.
