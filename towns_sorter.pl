@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# DocBrown/Wizard Sorter v1.2
+# DocBrown/Wizard Sorter v1.3
 # Written by Derek Pascarella (ateam)
 #
 # SD card sorter for the FM Towns/Marty ODEs DocBrown and Wizard.
@@ -11,7 +11,7 @@ use File::Basename;
 use File::Find::Rule;
 
 # Set version number.
-my $version = "1.2";
+my $version = "1.3";
 
 # Initialize input variables.
 my $sd_path_source = $ARGV[0];
@@ -206,7 +206,14 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 	}
 	elsif($game_list{$folder_name} ne $folder_name)
 	{
-		print "(previously " . $game_list{$folder_name} . ": ";
+		if($game_list{$folder_name} =~ /^\d+$/)
+		{
+			print "(previously " . $game_list{$folder_name} . ": ";
+		}
+		else
+		{
+			print "(new addition: ";
+		}
 	}
 	else
 	{
