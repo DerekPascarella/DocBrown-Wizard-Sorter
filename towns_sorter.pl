@@ -204,16 +204,9 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 	{
 		print "(unchanged: ";
 	}
-	elsif($game_list{$folder_name} ne $folder_name)
+	elsif($game_list{$folder_name} ne $folder_name && $game_list{$folder_name} =~ /^\d+$/)
 	{
-		if($game_list{$folder_name} =~ /^\d+$/)
-		{
-			print "(previously " . $game_list{$folder_name} . ": ";
-		}
-		else
-		{
-			print "(new addition: ";
-		}
+		print "(previously " . $game_list{$folder_name} . ": ";
 	}
 	else
 	{
