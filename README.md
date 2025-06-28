@@ -10,7 +10,7 @@ DocBrown/Wizard Sorter is currently at version [1.3](https://github.com/DerekPas
 
 ## Changelog
 * **Version 1.3 (2025-05-06)**
-  * Improved clarify of status message output when new disc images are added and processed.
+  * Improved clarity of status message output when new disc images are added and processed.
 * **Version 1.2 (2025-02-19)**
   * Cleaned up status message output to be more compact and descriptive.
   * Enhanced sanity-check for Almanac/Spellbook rebuild.
