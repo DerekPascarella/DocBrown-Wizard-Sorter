@@ -20,21 +20,29 @@ DocBrown/Wizard Sorter is currently at version [1.3](https://github.com/DerekPas
 * **Version 1.0 (2023-03-24)**
   * Initial release.
 
+## Adding Disc Images
+1. Create a folder on the root of the SD card, giving it whatever name should appear in the Almanac/Spellbook game list.
+   - Should a label be desired that contains characters that are restricted in file/folder names (i.e., `<`, `>`, `:`, `"`, `/`, `\`, `|`, `?`, and `*`), create a file named `Title.txt` inside of the game disc folder containing said label. In this case, the name of the folder itself is ignored and not important.
+3. Copy the disc image (in a [supported format](https://gdemu.wordpress.com/details/docbrown-details/)) to the newly created game folder.
+4. Drag the SD card onto `towns_sorter.exe` and watch the status messages until processing is complete.
+   - DocBrown/Wizard Sorter will alphanumerically sort all numbered folders based on game name, performing a proper FAT sort so that a game list exceeding 100 will be ordered properly (e.g., `20 200 21` now becomes `20 21 ... 200`).
+
+## Removing Disc Images
+1. On the SD card, open `\01\data\TITLES.TXT` and then identify the numbered folder containing the disc image to be removed.
+2. Remove the identified numbered folder from the SD card.
+3. Drag the SD card onto `towns_sorter.exe` and watch the status messages until processing is complete.
+
+## Changing Disc Image Names as They Appear in the Menu
+1. On the SD card, open `\01\data\TITLES.TXT` and then identify the numbered folder containing the disc image label to be renamed.
+2. Open the identified numbered folder, then open and make changes to the `Title.txt` text file.
+3. Drag the SD card onto `towns_sorter.exe` and watch the status messages until processing is complete.
+
 ## Supported Features
-DocBrown/Wizard Sorter aims to solve not only the problem of clean alphanumeric sorting of one's game list, but also the otherwise manual process of adding new games.
-
-Generally, this utility can be used in one of two ways.
-
-1. New disc images can be added to the target SD card by placing them inside a numbered folder, along with a `Title.txt` file containing the desired display name.  The number used to name said folder doesn't matter, as this utility will automatically rename and sort it accordingly.
-2. A simpler option afforded by this utility is to create a new folder in the root of the target SD card with the desired display name.  The disc image itself can be placed inside said folder, and DocBrown/Wizard Sorter will automatically generate a `Title.txt` file to reflect its folder name, and afterwards rename and sort it accordingly.
-
 Below is a specific list of the current features.
 
 * Optionally executes menu system's `RunMe.bat` script, which must be present in the expected location (folder `01`).
 * Automatically sorts game folders based on `Title.txt` inside of them, or the folder name itself if no text file is present.
 * Automatically generates `Title.txt` file for new folders added since last run.
-* Game names can be changed by modifying `Title.txt` inside of their respective folders and then processing SD card with DocBrown/Wizard Sorter.
-* Games can be removed by identifying the numbered folders in which they reside (referencing `\01\data\TITLES.TXT` to identify them), deleting said folders, and then processing SD card with DocBrown/Wizard Sorter.
 * Ignores folders without a valid disc image.
   * Note that adding a `Title.txt` file to a folder will force this utility to treat it as a valid game folder. This is useful for adding a menu entry to force booting from FDD, as both DocBrown and Wizard will do so if user launches a menu entry containing no disc image.
   * Invalid folders will be renamed to `INVALID_X`, where `X` is iterated over sequentially for each found.
