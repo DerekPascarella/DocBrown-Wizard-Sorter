@@ -11,6 +11,7 @@ DocBrown/Wizard Sorter is currently at version [1.3](https://github.com/DerekPas
 ## Changelog
 * **Version 1.4 (2025-09-08)**
   * Game labels can now be modified in `GameList.txt` before processing SD card instead of solely by modifying `Title.txt` metadata text files inside of numbered folders (read more [here](#method-2)).
+  * If files/folders are locked by another process when DocBrown/Wizard Sorter attempts to move/rename them, a prompt will now be displayed giving the user the opportunity to close said processes before proceeding, instead of those locked files/folders being skipped.
 * **Version 1.3 (2025-05-06)**
   * Improved clarity of status message output when new disc images are added and processed.
 * **Version 1.2 (2025-02-19)**
