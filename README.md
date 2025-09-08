@@ -6,7 +6,7 @@ This utility will perform all file/folder operations to automatically alphanumer
 ![#f03c15](https://i.imgur.com/XsUAGA0.png) **IMPORTANT:** *Please do not run this program against your daily-use SD card. Instead, use a copy or backup until you're sure it works with your disc image collection.*
 
 ## Current Version
-DocBrown/Wizard Sorter is currently at version [1.3](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
+DocBrown/Wizard Sorter is currently at version [1.4](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
 
 ## Changelog
 * **Version 1.4 (2025-09-08)**
