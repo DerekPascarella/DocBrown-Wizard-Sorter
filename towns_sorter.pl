@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# DocBrown/Wizard Sorter v1.3
+# DocBrown/Wizard Sorter v1.4
 # Written by Derek Pascarella (ateam)
 #
 # SD card sorter for the FM Towns/Marty ODEs DocBrown and Wizard.
@@ -8,10 +8,9 @@
 # Include necessary modules.
 use strict;
 use File::Basename;
-use File::Find::Rule;
 
 # Set version number.
-my $version = "1.3";
+my $version = "1.4";
 
 # Initialize input variables.
 my $sd_path_source = $ARGV[0];
@@ -50,16 +49,79 @@ elsif(!-R $sd_path_source)
 
 # Status message.
 print $cli_header;
+
+# Warning message requiring user to press Enter before continuing.
+print "WARNING: Before proceeding, ensure that no files or folders on SD card (" . $sd_path_source . ")\n";
+print "         are open in File Explorer or any other program. Failure to do so\n";
+print "         will result in data corruption!\n\n";
+print "Press Enter to continue...\n";
+
+<STDIN>;
+
+# If last automatically generated GameList.txt file exists, perform comparison with
+# current version in root of SD card to identify title changes to be carried out.
+if(-e $sd_path_source . "/01/GameList.txt" && !files_are_identical($sd_path_source . "/GameList.txt", $sd_path_source . "/01/GameList.txt"))
+{
+	# Status message and prompt.
+	my $title_prompt;
+
+	print "The \"GameList.txt\" file in the root of the SD card has been changed since\n";
+	print "the last time it was processed. Update folder titles to reflect changes\n";
+	print "made to the list text file? (Y/N) ";
+
+	while($title_prompt ne "Y" && $title_prompt ne "N")
+	{
+		chop($title_prompt = uc(<STDIN>));
+	}
+
+	# Perform title update.
+	if($title_prompt eq "Y")
+	{
+		# Find changed lines in GameList.txt.
+		my $list_old = read_file($sd_path_source . "\\01\\GameList.txt");
+		my $list_new = read_file($sd_path_source . "\\GameList.txt");
+
+		my @lines_old = split(/\R/, $list_old);
+		my @lines_new = split(/\R/, $list_new);
+
+		my $max = @lines_old > @lines_new ? @lines_old : @lines_new;
+
+		for(my $i = 0; $i < $max; $i ++)
+		{
+			my $old = $lines_old[$i] // "";
+			my $new = $lines_new[$i] // "";
+
+			next if($old eq $new);
+
+			# Extract folder number and new title.
+			my ($folder_number, $new_title) = $new =~ /^\s*(\d+)\s*-\s*(.+?)\s*$/;
+
+			# Skip if not matched or if folder number is 01.
+			next unless(defined $folder_number && defined $new_title);
+			next if($folder_number eq "01");
+
+			# Update title text file.
+			write_file($sd_path_source . "\\" . $folder_number . "\\Title.txt", $new_title);
+		}
+
+		# Status message.
+		print "\nTitle update complete!\n";
+	}
+
+	print "\n";
+}
+
+# Status message.
 print "Processing SD card (" . $sd_path_source . ")...\n\n";
 
 # Create temporary folder for purposes of sorting FAT filesystem.
 mkdir($sd_path_source . "/towns_sorter_temp/");
 
-# Open SD card path for reading.
-opendir(my $sd_path_source_handler, $sd_path_source);
+# Store list of files in game folder.
+my @sd_path_source_files = folder_list($sd_path_source, 1);
 
 # Iterate through contents of SD card in alphanumeric order.
-foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source_handler))
+foreach my $sd_subfolder (@sd_path_source_files)
 {
 	# Skip folders starting with a period.
 	next if($sd_subfolder =~ /^\./);
@@ -73,11 +135,11 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	# Ignore Windows system folder.
 	next if($sd_subfolder eq "System Volume Information");
 
+	# Ignore temporary folder.
+	next if($sd_subfolder eq "towns_sorter_temp");
+
 	# Store list of all files in subfolder.
-	my $sd_subfolder_rule = File::Find::Rule->new;
-	$sd_subfolder_rule->file;
-	$sd_subfolder_rule->maxdepth(1);
-	my @sd_subfolder_files = $sd_subfolder_rule->in($sd_path_source . "/" . $sd_subfolder);
+	my @sd_subfolder_files = folder_list($sd_path_source . "/" . $sd_subfolder);
 
 	# Set game-found flag to zero.
 	my $game_found = 0;
@@ -103,11 +165,12 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	}
 
 	# To prevent folder name conflicts, rename invalid folder for user to process manually.
-	if(!$game_found && $sd_subfolder ne "towns_sorter_temp")
+	if(!$game_found)
 	{
 		$invalid_count ++;
 
-		rename($sd_path_source . "/" . $sd_subfolder, $sd_path_source . "/INVALID_" . $invalid_count);
+		rename_until_free($sd_path_source . "/" . $sd_subfolder,
+						  $sd_path_source . "/INVALID_" . $invalid_count);
 	}
 
 	# If folder contains no game disc image, skip it.
@@ -142,26 +205,20 @@ foreach my $sd_subfolder (sort { 'numeric'; $a <=> $b }  readdir($sd_path_source
 	# For purposes of FAT sorting, create temporary folder for game.
 	mkdir($sd_path_source . "/towns_sorter_temp/" . $sd_subfolder);
 	
-	# Open game folder for reading.
-	opendir(my $game_folder_handler, $sd_path_source . "/" . $sd_subfolder);
+	# Store list of files in game folder.
+	my @game_folder_files = folder_list($sd_path_source . "/" . $sd_subfolder);
 
 	# Iterate through contents of game folder.
-	foreach my $game_folder_file (readdir($game_folder_handler))
+	foreach my $game_folder_file (@game_folder_files)
 	{
 		# Move each file into temporary folder.
-		rename($sd_path_source . "/" . $sd_subfolder . "/" . $game_folder_file,
-		       $sd_path_source . "/towns_sorter_temp/" . $sd_subfolder . "/" . $game_folder_file);
+		rename_until_free($sd_path_source . "/" . $sd_subfolder . "/" . $game_folder_file,
+						  $sd_path_source . "/towns_sorter_temp/" . $sd_subfolder . "/" . $game_folder_file);
 	}
-
-	# Close game folder.
-	closedir($game_folder_handler);
 
 	# Remove original game folder.
 	rmdir($sd_path_source . "/" . $sd_subfolder);
 }
-
-# Close SD card path.
-closedir($sd_path_source_handler);
 
 # No games found on target SD card.
 if(!$game_count_found)
@@ -218,26 +275,39 @@ foreach my $folder_name (sort {lc $a cmp lc $b} keys %game_list)
 	# Create game folder based on new sorted name.
 	mkdir($sd_path_source . "/" . $sd_subfolder_new);
 	
-	# Open temporary game folder for reading.
-	opendir(my $game_folder_handler, $sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name});
+	# List game files in temporary folder.	
+	my @game_folder_files = folder_list($sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name});
 
 	# Iterate through contents of temporary game folder.
-	foreach my $game_folder_file (readdir($game_folder_handler))
+	foreach my $game_folder_file (@game_folder_files)
 	{
 		# Move each file back from temporay game folder.
-		rename($sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name} . "/" . $game_folder_file,
-		       $sd_path_source . "/" . $sd_subfolder_new . "/" . $game_folder_file);
+		rename_until_free($sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name} . "/" . $game_folder_file,
+						  $sd_path_source . "/" . $sd_subfolder_new . "/" . $game_folder_file);
 	}
-
-	# Close game folder.
-	closedir($game_folder_handler);
 
 	# Remove temporary game folder.
 	rmdir($sd_path_source . "/towns_sorter_temp/" . $game_list{$folder_name});
+
+	# Overwrite original folder name with new one.
+	$game_list{$folder_name} = $sd_subfolder_new;
 }
 
 # Remove temporary folder.
 rmdir($sd_path_source . "/towns_sorter_temp/");
+
+# Write separate game list to root of SD card for user convenience.
+my $game_list = "01 - MENU\n";
+
+foreach my $folder_name (sort { lc($a) cmp lc($b) } keys %game_list)
+{
+	my $folder_number = $game_list{$folder_name};
+	$game_list .= $folder_number . " - " . $folder_name . "\n";
+}
+
+# Write GameList.txt files.
+write_file($sd_path_source . "/GameList.txt", $game_list);
+write_file($sd_path_source . "/01/GameList.txt", $game_list);
 
 # Status message.
 print "\n" . $game_count_found . " disc images(s) fully processed!\n\n";
@@ -288,14 +358,7 @@ if(lc($batch_response) eq "y")
 # Status message.
 print "\nSD card processing complete!\n\n";
 print "An index of disc images can be found in the following location:\n";
-print $sd_path_source;
-
-if(substr($sd_path_source, -1) ne "\\")
-{
-	print "\\";
-}
-
-print "01\\data\\TITLES.TXT\n\n";
+print $sd_path_source . "\\GameList.txt\n\n";
 print "Press Enter to exit.\n";
 <STDIN>;
 
@@ -325,4 +388,118 @@ sub write_file
 	open my $out, '>', $filename;
 	print $out $contents;
 	close $out;
+}
+
+# Subroutine to return an array of all files or folders in a specified folder.
+#
+# 1st parameter - Full path of folder to list.
+# 2nd parameter - If true, only return top-level folders (no recursion).
+sub folder_list
+{
+	my $folder = $_[0];
+	my $only_folders = $_[1] // 0;
+
+	opendir(my $folder_handle, $folder) or die $!;
+	my @entries = grep { !/^\./ } readdir($folder_handle);
+	closedir($folder_handle);
+
+	my @results;
+
+	foreach my $entry (@entries)
+	{
+		my $full_path = $folder . "/" . $entry;
+
+		if($only_folders)
+		{
+			push @results, $entry if(-d $full_path);
+		}
+		else
+		{
+			if(-f $full_path)
+			{
+				push @results, $entry;  # Just the file name
+			}
+			elsif(-d $full_path)
+			{
+				# Recursively add full paths for files in subfolders
+				my @subfolder_files = folder_list($full_path);
+				push @results, map { $entry . "/" . $_ } @subfolder_files;
+			}
+		}
+	}
+
+	return @results;
+}
+
+# Subroutine to attempt file move/rename with prompt to close any processes preventing access to
+# it.
+#
+# 1st parameter - Full path of source file/folder.
+# 2nd parameter - Full path to destination file/folder.
+sub rename_until_free
+{
+	my $source = ($_[0] =~ s/\\{2,}/\\/gr);
+	my $destination = $_[1];
+
+	while(1)
+	{
+		return 1 if(rename $source, $destination);
+
+		my $code = Win32::GetLastError();
+
+		if($code == 32 || $code == 5 || $!{EACCES} || $!{EBUSY})
+		{
+			print "The following file/folder is open in one or more other programs:\n";
+			print "   -> " . $source . "\n";
+			print "Please terminate any processes preventing access and then press Enter.\n";
+
+			<STDIN>;
+
+			next;
+		}
+
+		die "Fatal error trying to move \"$source\" to \"$destination\":\n$!\n";
+	}
+}
+
+# Subroutine to determine if two specified files are identical.
+#
+# 1st parameter - Full path of first file.
+# 2nd parameter - Full path of second file.
+sub files_are_identical
+{
+	my $file1 = $_[0];
+	my $file2 = $_[1];
+
+	my $size1 = -s $file1;
+	my $size2 = -s $file2;
+
+	return 0 if(!defined $size1 || !defined $size2);
+	return 0 if($size1 != $size2);
+
+	open(my $filehandle1, '<', $file1) or return 0;
+	open(my $filehandle2, '<', $file2) or return 0;
+	binmode $filehandle1;
+	binmode $filehandle2;
+
+	my $buffer1;
+	my $buffer2;
+
+	while (1)
+	{
+		my $read1 = read($filehandle1, $buffer1, 4096);
+		my $read2 = read($filehandle2, $buffer2, 4096);
+
+		# Both files reached EOF
+		last if $read1 == 0 && $read2 == 0;
+
+		# Mismatch in read length or content
+		return 0 if $read1 != $read2;
+		return 0 if $buffer1 ne $buffer2;
+	}
+
+	close($filehandle1);
+	close($filehandle2);
+
+	return 1;
 }
