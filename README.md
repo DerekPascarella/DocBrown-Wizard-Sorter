@@ -31,7 +31,7 @@ DocBrown/Wizard Sorter is currently at version [1.4](https://github.com/DerekPas
    - DocBrown/Wizard Sorter will alphanumerically sort all numbered folders based on game name, performing a proper FAT sort so that a game list exceeding 100 will be ordered properly (e.g., `20 200 21` now becomes `20 21 ... 200`).
 
 ## Removing Disc Images
-1. On the SD card, open `\01\data\TITLES.TXT` and then identify the numbered folder containing the disc image to be removed.
+1. On the SD card, open `GameList.txt` on the root of the SD card and then identify the numbered folder containing the disc image to be removed.
 2. Remove the identified numbered folder from the SD card.
 3. Drag the SD card onto `towns_sorter.exe` and watch the status messages until processing is complete.
 
