@@ -9,6 +9,8 @@ This utility will perform all file/folder operations to automatically alphanumer
 DocBrown/Wizard Sorter is currently at version [1.3](https://github.com/DerekPascarella/DocBrown-Wizard-Sorter/raw/main/towns_sorter.exe).
 
 ## Changelog
+* **Version 1.4 (2025-09-08)**
+  * Game labels can now be modified in `GameList.txt` before processing SD card instead of solely by modifying `Title.txt` metadata text files inside of numbered folders (read more [here](#method-2)).
 * **Version 1.3 (2025-05-06)**
   * Improved clarity of status message output when new disc images are added and processed.
 * **Version 1.2 (2025-02-19)**
@@ -33,9 +35,37 @@ DocBrown/Wizard Sorter is currently at version [1.3](https://github.com/DerekPas
 3. Drag the SD card onto `towns_sorter.exe` and watch the status messages until processing is complete.
 
 ## Changing Disc Image Names as They Appear in the Menu
+There are two methods by which users can modify the menu display labels for disc images. The first method is more cumbersome, especially for bulk changes. The second method is convenient and allows quick changes, especially in bulk.
+#### Method 1
 1. On the SD card, open `\01\data\TITLES.TXT` and then identify the numbered folder containing the disc image label to be renamed.
 2. Open the identified numbered folder, then open and make changes to the `Title.txt` text file.
 3. Drag the SD card onto `towns_sorter.exe` and watch the status messages until processing is complete.
+#### Method 2
+This method requires that an SD card is processed at least once (even without changes) by version 1.4 or newer.
+
+1. Open `GameList.txt` in the root of the SD card and identify each disc image with metadata that is to be modified.
+2. Edit `GameList.txt` directly to make desired changes to menu display labels.
+3. Drag the SD card onto `towns_sorter.exe` and watch the status messages until processing is complete.
+
+Note that there is minimal error handling for user mistakes when manually editing `GameList.txt`. One must be careful when making changes to avoid breaking the expected formatting.
+
+As an example, `GameList.txt` may contain the following.
+
+```
+01 - MENU
+02 - ---Boot From Floppy---
+03 - Advantage Tennis
+04 - AFTER BURNER II
+```
+
+However, the user wishes to use title casing for "After Burner II", so they make the following modification.
+
+```
+01 - MENU
+02 - ---Boot From Floppy---
+03 - Advantage Tennis
+04 - After Burner II
+```
 
 ## Supported Features
 Below is a specific list of the current features.
