@@ -87,12 +87,18 @@ Two options exist for launching this utility.
 Example output:
 
 ```
-DocBrown/Wizard Sorter v1.2
+DocBrown/Wizard Sorter v1.4
 Written by Derek Pascarella (ateam)
 
-Processing SD card (F:)...
+WARNING: Before proceeding, ensure that no files or folders on SD card (F:\)
+         are open in File Explorer or any other program. Failure to do so
+         will result in data corruption!
 
-8 disc image(s) found and pre-processed on SD card.
+Press Enter to continue...
+
+Processing SD card (F:\)...
+
+6 disc image(s) found and pre-processed on SD card.
 
 These disc images have been moved to a temporary folder on the SD card for
 purposes of FAT sorting.
@@ -100,34 +106,34 @@ purposes of FAT sorting.
 In five seconds, disc images will be auomatically organized using numbered
 folders in alphanumeric order.
 
-  -> Folder 02 (unchanged: ADVANTAGE TENNIS)
-  -> Folder 03 (unchanged: AFTER BURNER)
-  -> Folder 04 (unchanged: AFTER BURNER 2)
-  -> Folder 05 (unchanged: AFTER BURNER 3)
-  -> Folder 06 (unchanged: ALLTYNEX (T-EN))
-  -> Folder 07 (new: ARQUELPHOS)
-  -> Folder 08 (previously 07: ASUKA 120% BURNING FEST)
-  -> Folder 09 (previously 08: ASUKA 120% BURNING FEST - UNLIMITED)
+  -> Folder 02 (new: After Burner)
+  -> Folder 03 (previously 02: Asuka 120% Burning Fest - Excellent [REQ. DISK])
+  -> Folder 04 (previously 03: EMIT Vol. 1 - Lost in Time (T-En) [REQ. DISK])
+  -> Folder 05 (previously 04: Indiana Jones and the Last Crusade)
+  -> Folder 06 (previously 05: Muscle Bomber - The Body Explosion)
+  -> Folder 07 (previously 06: Scavenger 4)
 
-8 disc images(s) fully processed!
+6 disc images(s) fully processed!
 
 Run Almanac/Spellbook batch script? (Y/N) y
 
 ==========RunMe.bat==========
 Scanning folders...
-Titles found: 8
+Titles found: 6
+Compiling list
+Done
 Total translation table size: 0
 Total rockridge attributes bytes: 0
-Total directory bytes: 2564
-Path table size(bytes): 24
-782 extents written (1 MB)
-IO.SYS LBA: 25
+Total directory bytes: 560
+Path table size(bytes): 10
+611 extents written (1 MB)
+IO.SYS LBA: 24
 =============================
 
 SD card processing complete!
 
 An index of disc images can be found in the following location:
-F:\01\data\TITLES.TXT
+F:\GameList.txt
 
 Press Enter to exit.
 ```
