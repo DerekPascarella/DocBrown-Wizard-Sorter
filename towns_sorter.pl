@@ -357,7 +357,7 @@ if(lc($batch_response) eq "y")
 # Status message.
 print "\nSD card processing complete!\n\n";
 print "An index of disc images can be found in the following location:\n";
-print $sd_path_source . "\\GameList.txt\n\n";
+print $sd_path_source . "GameList.txt\n\n";
 print "Press Enter to exit.\n";
 <STDIN>;
 
