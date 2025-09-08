@@ -44,7 +44,7 @@ There are two methods by which users can modify the menu display labels for disc
 #### Method 2
 This method requires that an SD card is processed at least once (even without changes) by version 1.4 or newer.
 
-1. Open `GameList.txt` in the root of the SD card and identify each disc image with metadata that is to be modified.
+1. Open `GameList.txt` in the root of the SD card and identify each disc image with a display label that is to be modified.
 2. Edit `GameList.txt` directly to make desired changes to menu display labels.
 3. Drag the SD card onto `towns_sorter.exe` and watch the status messages until processing is complete.
 
