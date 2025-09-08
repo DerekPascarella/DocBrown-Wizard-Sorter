@@ -350,7 +350,6 @@ if(lc($batch_response) eq "y")
 	# Batch script not found.
 	else
 	{
-		#print "\nThe \"RunMe.bat\" script was not found in folder \"01\"!\n";
 		print "\nThe \"RunMe.bat\" script was not found in folder 01!\n";
 	}
 }
